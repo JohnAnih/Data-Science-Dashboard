@@ -8,6 +8,9 @@ import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 from layouts import page_home, page_404, page_upload, page_feature, page_data_profiling
 from src import settings, parser
+import matplotlib.pyplot as plt
+import missingno as msno
+from plotly.tools import mpl_to_plotly
 
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
@@ -25,7 +28,7 @@ app.layout = html.Div([
 def display_page(pathname):
     """Docstring."""
     if pathname == '/':
-        page_content = page_home.layout
+        page_content = page_home.Build_home_page()
     elif pathname == '/upload':
         page_content = page_upload.layout
     elif pathname == '/feature':
@@ -68,6 +71,26 @@ def upload_data(contents, option_ok, option_cancel, sheet_index):
         debug = 'none'
     return url, datasets, modal, alert, debug
 
+
+def profiling(df):
+    df_profiling = parser.data_profiling(df)
+    result = []
+    df_profiling.set_index('index', inplace=True)
+    for col in df_profiling.columns:
+        res = []
+        res.append(html.H5(col))
+        for idx in df_profiling.index:
+            res.append(idx)
+            res.append(' : ')
+            res.append(df_profiling.loc[idx, col])
+            res.append(html.Br())
+        res.append(html.Br())
+        chart = {
+            'data': [{'x': df[col], 'type': 'histogram'}]
+        }
+        result.append(dbc.Row([html.Div(res), dcc.Graph(figure=chart)]))
+    return result
+
 @app.callback(
     Output('data-overview', 'children'),
     [Input('trigger-dashboard', 'value')],
@@ -76,14 +99,17 @@ def show_dashboard(trigger_value, datasets):
     """Docstring."""
     datasets = json.loads(datasets)
     df = pd.read_json(datasets['data'], orient='split')
-    df_profiling = pd.read_json(datasets['profiling'], orient='split')
+    ax = msno.matrix(df)
+    fig = ax.get_figure()
+    plotly_fig = mpl_to_plotly(fig)
     table_overview, table_profiling = dash.no_update, dash.no_update
     return html.Div([
-        'First 5 rows',
-        dash_table.DataTable(id='table_overview', columns=[{'name': col, 'id': col} for col in df.columns], data=df.head(5).to_dict('row')),
+        html.H3('First 5 rows'),
+        html.Div(dash_table.DataTable(id='table_overview', columns=[{'name': col, 'id': col} for col in df.columns], data=df.head(5).to_dict('row')), style={'margin': '40px'}),
         html.Br(),
-        'Data Profiling',
-        dash_table.DataTable(id='table_profiling', columns=[{'name': col, 'id': col} for col in df_profiling.columns], data=df_profiling.to_dict('row'))
+         dcc.Graph(figure=plotly_fig),
+        html.H3('Data Profiling'),
+		dbc.Col(profiling(df), style={'margin': '20px'})
     ])
 
 

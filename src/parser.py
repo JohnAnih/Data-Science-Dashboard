@@ -30,6 +30,8 @@ def data_profiling(df):
         'mean': df.mean(numeric_only=True),
         'std': df.std(numeric_only=True),
         'min': df.min(numeric_only=True),
-        'max': df.max(numeric_only=True)
+        'max': df.max(numeric_only=True),
+		'kurtosis': df.kurt(numeric_only=True),
+		'skewness': df.skew(numeric_only=True)
         }).T.reset_index()
     return df_profiling.reindex(columns=['index'] + df.columns.tolist())
