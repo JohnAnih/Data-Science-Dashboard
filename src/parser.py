@@ -32,6 +32,9 @@ def data_profiling(df):
         'min': df.min(numeric_only=True),
         'max': df.max(numeric_only=True),
 		'kurtosis': df.kurt(numeric_only=True),
-		'skewness': df.skew(numeric_only=True)
+		'skewness': df.skew(numeric_only=True),
+        'missing': df.isna().sum(),
+        'count_row': df.shape[0],
+        '%missing': df.isna().sum()/df.shape[0]*100
         }).T.reset_index()
     return df_profiling.reindex(columns=['index'] + df.columns.tolist())
