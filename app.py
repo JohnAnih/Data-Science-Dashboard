@@ -1,4 +1,4 @@
-import json
+import json, math
 import pandas as pd
 import dash
 import dash_table
@@ -71,6 +71,8 @@ def upload_data(contents, option_ok, option_cancel, sheet_index):
         debug = 'none'
     return url, datasets, modal, alert, debug
 
+def num_format(x):
+    return round(x, 2) if isinstance(x, float) and not math.isnan(x) and int(x) != x else x
 
 def profiling(df):
     df_profiling = parser.data_profiling(df)
@@ -79,12 +81,10 @@ def profiling(df):
     for col in df_profiling.columns:
         res = []
         res.append(html.H5(col))
+        tbl = []
         for idx in df_profiling.index:
-            res.append(idx)
-            res.append(' : ')
-            res.append(df_profiling.loc[idx, col])
-            res.append(html.Br())
-        res.append(html.Br())
+            tbl.append(html.Tr([html.Td(idx), ' : ', html.Td(num_format(df_profiling.loc[idx, col]))]))
+        res.append(html.Table(tbl))
         chart = {
             'data': [{'x': df[col], 'type': 'histogram'}]
         }
@@ -107,7 +107,7 @@ def show_dashboard(trigger_value, datasets):
         html.H3('First 5 rows'),
         html.Div(dash_table.DataTable(id='table_overview', columns=[{'name': col, 'id': col} for col in df.columns], data=df.head(5).to_dict('row')), style={'margin': '40px'}),
         html.Br(),
-         dcc.Graph(figure=plotly_fig),
+        #  dcc.Graph(figure=plotly_fig),
         html.H3('Data Profiling'),
 		dbc.Col(profiling(df), style={'margin': '20px'})
     ])
