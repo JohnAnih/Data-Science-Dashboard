@@ -68,36 +68,27 @@ slider = html.Div(className="slider",
                   children=[html.Span(id="slide-1"), 
                             html.Span(id="slide-2"), 
                             html.Span(id="slide-3"), 
-                            html.Span(id="slide-4"), 
                             
                             html.Div(className="image-container", 
-                                     children=[html.Img(src="./assets/slider-1.jpg",
+                                     children=[html.Img(src="/assets/slider-1.jpg",
                                                         className="slide", 
                                                         width="1650", 
                                                         height="350"), 
                                                
-                                               html.Img(src="./assets/slider-2.jpg",
+                                               html.Img(src="/uploads/media/default/0001/03/b7d624354d5fa22e38b0ab1f9b905fb08ccc6a05.jpeg",
                                                         className="slide",
                                                         width="1650", 
                                                         height="350"), 
                                                
-                                               html.Img(src="./assets/slider-3.jpg", 
+                                               html.Img(src="/uploads/media/default/0001/03/5bfad15a7fd24d448a48605baf52655a5bbe5a71.jpeg", 
                                                         className="slide",
                                                         width="1650", 
-                                                        height="350"),
-                                               
-                                               html.Img(src="./assets/slider-4.jpg", 
-                                                        className="slide",
-                                                        width="1650", 
-                                                        height="350")
-                                               ],
-                                     ),
+                                                        height="350")],),
                             
                             html.Div(className="buttons", 
                                      children=[html.A(href="#slide-1"), 
                                                html.A(href="#slide-2"), 
-                                               html.A(href="#slide-3"),
-                                               html.A(href="#slide-4")])
+                                               html.A(href="#slide-3")])
                             ]
                   )
 

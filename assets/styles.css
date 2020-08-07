@@ -1,3 +1,144 @@
+.features-box {
+    margin: 30px;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 1560px;
+    height: 380px;
+    background-color: rgb(6, 67, 122);
+    padding: 5px;
+    /* this */
+}
+
+.features-box>a {
+    text-decoration: none;
+    flex: 1 1 auto;
+    border: 5px rgb(255, 255, 255) solid;
+    margin: 5px;
+    width: 500px;
+    background-color: #ce3438;
+    height: 250px;
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.features-box>a:hover {
+    background-color: #15c2db;
+}
+
+.slider {
+    width: 1600px;
+    height: 350px;
+    background-color: yellow;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.image-container {
+    width: 1800px;
+    background-color: pink;
+    height: 350px;
+    clear: both;
+    position: relative;
+    -webkit-transition: left 2s;
+    -moz-transition: left 2s;
+    -o-transition: left 2s;
+    transition: left 2s;
+}
+
+.slide {
+    float: left;
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+}
+
+#slide-1:target~.image-container {
+    left: 0px;
+}
+
+#slide-2:target~.image-container {
+    left: -1600px;
+}
+
+#slide-3:target~.image-container {
+    left: -3200px;
+}
+
+#slide-4:target~.image-container {
+    left: -4800px;
+}
+
+.buttons {
+    position: relative;
+    top: -20px;
+}
+
+.buttons a {
+    display: inline-block;
+    height: 15px;
+    width: 15px;
+    border-radius: 50px;
+    background-color: lightgreen;
+}
+
+@media only screen and (max-width: 600px) {
+    #site-features {
+        flex-wrap: wrap;
+        width: auto;
+        height: auto;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    #site-features {
+        flex-wrap: wrap;
+        width: auto;
+        height: auto;
+    }
+}
+
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+
+@media only screen and (max-width: 800px) {
+    #site-features {
+        flex-wrap: wrap;
+        width: auto;
+        height: auto;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    #site-features {
+        flex-wrap: wrap;
+        width: auto;
+        height: auto;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    #site-features {
+        flex-wrap: wrap;
+        width: auto;
+        height: auto;
+    }
+}
+
+@media only screen and (max-width: 1400px) {
+    #site-features {
+        flex-wrap: wrap;
+        width: auto;
+        height: auto;
+    }
+}
+
 P {
     font-family: 'Montserrat';
     font-size: 1em;
@@ -5,6 +146,72 @@ P {
     font-weight: 300;
     display: block;
     margin: 0% 10%;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.wrapper>* {
+    padding: 20px;
+}
+
+.page-main {
+    flex-grow: 1;
+}
+
+.page-header nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page-header ul {
+    display: flex;
+    order: 1;
+    width: 100%;
+    margin-top: 15px;
+}
+
+@media screen and (min-width: 550px) {
+    .page-header ul {
+        width: auto;
+        margin-top: 0;
+    }
+    .page-header .cta-contact {
+        order: 1;
+    }
+}
+
+
+/* variables */
+
+:root {
+    --main-white-color: white;
+    --main-purple-color: #9e89b8;
+}
+
+.page-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 350px;
+    background: var(--main-purple-color) url(IMG_SRC) no-repeat center / cover;
+    background-blend-mode: luminosity;
+    color: var(--main-white-color);
+}
+
+.page-main div {
+    max-width: 500px;
+}
+
+@media screen and (min-width: 768px) {
+    .page-main {
+        padding-left: 90px;
+    }
 }
 
 #welcome-user {
