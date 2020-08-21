@@ -1,3 +1,7 @@
+div.disabled {
+    overflow-x: hidden;
+}
+
 .features-box {
     margin: 30px;
     display: flex;
@@ -142,10 +146,13 @@
 P {
     font-family: 'Montserrat';
     font-size: 1em;
-    text-align: center;
+    text-align: left;
     font-weight: 300;
     display: block;
-    margin: 0% 10%;
+}
+
+.text-white {
+    color: rgb(3, 3, 3)!important;
 }
 
 .wrapper {
