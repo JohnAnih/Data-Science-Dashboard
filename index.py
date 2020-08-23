@@ -8,14 +8,12 @@ import dash_trich_components as dtc
 
 import data_import
 
-dtc.__version__
+
+# app = dash.Dash(__name__,
+#                 external_stylesheets = [dbc.themes.BOOTSTRAP])
 
 
-app = dash.Dash(__name__,
-                external_stylesheets = [dbc.themes.BOOTSTRAP])
-
-
-app.title = "Automated Data Science and Machine learning platform"
+# app.title = "Automated Data Science and Machine learning platform"
 
 def create_navbar():
     """
@@ -142,7 +140,7 @@ def display_features_using_cards():
                         className="card-text",
                     ),
                     dbc.Button(dcc.Link("Get started",
-                                      href="/data-import",
+                                      href="/data_import",
                            style={"color":"white", "text-decoration":"none"}), 
                            color="primary"),
                 ], 
@@ -241,7 +239,7 @@ def display_features_using_cards():
 
 
 
-app.layout = html.Div(
+index_layout = html.Div(
     id="get-started-app",
     
     children= [create_navbar(), 
@@ -251,7 +249,7 @@ app.layout = html.Div(
 )
 
 
-if __name__ == '__main__':
-    app.run_server(debug=True,
-                   use_reloader=False, 
-                   port=8080)
+# if __name__ == '__main__':
+#     app.run_server(debug=True,
+#                    use_reloader=False, 
+#                    port=8080)
