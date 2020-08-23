@@ -8,13 +8,6 @@ import dash_trich_components as dtc
 
 import data_import
 
-
-# app = dash.Dash(__name__,
-#                 external_stylesheets = [dbc.themes.BOOTSTRAP])
-
-
-# app.title = "Automated Data Science and Machine learning platform"
-
 def create_navbar():
     """
     create_navbar creates the website Navbar using bootsraps components
@@ -136,7 +129,7 @@ def display_features_using_cards():
                 [
                     html.H5("Data Import", className="card-title"),
                     html.P(
-                        "Update your data.",
+                        "Upload your data.",
                         className="card-text",
                     ),
                     dbc.Button(dcc.Link("Get started",
@@ -248,8 +241,3 @@ index_layout = html.Div(
 
 )
 
-
-# if __name__ == '__main__':
-#     app.run_server(debug=True,
-#                    use_reloader=False, 
-#                    port=8080)

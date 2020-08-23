@@ -12,30 +12,33 @@ import base64
 import datetime
 import io
 
-
-# app = dash.Dash(__name__,
-#                 external_stylesheets = [dbc.themes.BOOTSTRAP])
-
-
-# app.title = "Data Upload"
+from layouts import markdowns
 
 def learn_more_button():
+    """
+    learn_more_button creates the learn more button that informs users
+
+    about the accepted formats on the ADSML platform.
+
+    Returns
+    -------
+    Button
+        Bootstrap modal button
+    """    ""
     return html.Div(
                 [
                     dbc.Modal(
                         [
                             dbc.ModalHeader("Supported formats"),
-                            dbc.ModalBody(dcc.Markdown("""For now, **ADSML** is supporting only CSV 
-                                                       and Excel files only, however,in the future, 
-                                                       we plan to support popular database systems 
-                                                       like MySQL, Postgres and Microsoft server. 
-                                                       If you would like to stay updated, 
-                                                       please visit our [blog](#)""")),
+                            dbc.ModalBody(dcc.Markdown(markdowns.data_import_learn_more)),
                             dbc.ModalFooter(
-                                dbc.Button("Close", id="close", className="ml-auto")
+                                dbc.Button("Close", 
+                                           id="learn-more-close-button-data-import", 
+                                           className="ml-auto")
                             ),
                         ],
-                        id="modal",
+                        id="data-import-learn-more-button",
+                        scrollable=True,
                     ),
                 ]
             )
@@ -57,7 +60,7 @@ def create_navbar():
     supported_formats = html.Div(
                                   [
                                     dbc.Button("Learn more", 
-                                               id="open", 
+                                               id="learn-more-button", 
                                                color="danger", 
                                                className="mr-1"),
 
@@ -65,7 +68,7 @@ def create_navbar():
                                             """ Click here to learn more about the input data sources 
                                                 currently accepted on the ADSML platform.
                                             """,
-                                            target="open",
+                                            target="learn-more-button",
                                         ),
                                   ]
                                 )
@@ -231,10 +234,3 @@ data_import_page = html.Div(
 
 )
 
-
-    
-    
-# if __name__ == '__main__':
-#     app.run_server(debug=True,
-#                    use_reloader=False, 
-#                    port=8080)

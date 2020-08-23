@@ -7,6 +7,8 @@ from dash.dependencies import Input, Output, State
 from  index import index_layout
 from data_import import data_import_page
 
+
+
 app = dash.Dash(__name__,
                 external_stylesheets = [dbc.themes.BOOTSTRAP])
 
@@ -39,9 +41,9 @@ def display_page(pathname):
     #return page_content
 
 @app.callback(
-    Output("modal", "is_open"),
-    [Input("open", "n_clicks"), Input("close", "n_clicks")],
-    [State("modal", "is_open")],
+    Output("data-import-learn-more-button", "is_open"),
+    [Input("learn-more-button", "n_clicks"), Input("learn-more-close-button-data-import", "n_clicks")],
+    [State("data-import-learn-more-button", "is_open")],
 )
 def toggle_modal(n1, n2, is_open):
     if n1 or n2:
