@@ -19,7 +19,7 @@ def parse(content, file_type, sheet_index=None):
     except IndexError:
         datasets = None
         status = 'wrong_sheet_index'
-    return status, json.dumps(datasets)
+    return status, datasets
 
 def data_profiling(df):
     df_profiling = pd.DataFrame({

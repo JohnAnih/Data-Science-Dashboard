@@ -138,6 +138,16 @@ file_upload = html.Div([
         # Allow multiple files to be uploaded
         multiple=False
     ),
+    dbc.Modal([
+        dbc.ModalHeader('Upload option'),
+        dbc.ModalBody(
+            dbc.Input(id='sheet-index', placeholder='Sheet Index', type='number')),
+        dbc.ModalFooter([
+            dbc.Button('Cancel', id='upload-option-cancel'),
+            dbc.Button('Ok', id='upload-option-ok')
+        ])], 
+        id='modal-upload-option'),
+    html.Div(id='alert-upload'),
     html.Div(id='output-data-upload'),
 ])
 
