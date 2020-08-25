@@ -7,7 +7,7 @@ import dash_html_components as html
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 from  index import index_layout
-from data_import import data_import_page
+from data_import import load_data_import_page
 from src import settings, parser
 
 
@@ -40,7 +40,7 @@ def display_page(pathname):
     if pathname == '/':
         return index_layout
     elif pathname == '/data_import':
-        return data_import_page
+        return load_data_import_page()
     # elif pathname == '/feature':
     #     page_content = page_feature.layout
     # elif pathname == '/data_profiling':
@@ -51,7 +51,10 @@ def display_page(pathname):
 
 @app.callback(
     Output("data-import-learn-more-button", "is_open"),
-    [Input("learn-more-button", "n_clicks"), Input("learn-more-close-button-data-import", "n_clicks")],
+    
+    [Input("learn-more-button", "n_clicks"), 
+     Input("learn-more-close-button-data-import", "n_clicks")],
+    
     [State("data-import-learn-more-button", "is_open")],
 )
 def toggle_modal(n1, n2, is_open):

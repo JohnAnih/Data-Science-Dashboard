@@ -118,51 +118,88 @@ def create_navbar():
                 className="mb-5",
         )
 
-file_upload = html.Div([
-    dcc.Upload(
-        id='upload-data',
-        children=html.Div([
-            'Drag and Drop or ',
-            html.A('Upload file',style={"text-decoration":"underline"})
-        ]),
-        style={
-            'width': '80%',
-            'height': '100px',
-            'lineHeight': '60px',
-            'borderWidth': '1px',
-            'borderStyle': 'dashed',
-            'borderRadius': '5px',
-            'textAlign': 'center',
-            'margin': 'auto'
-        },
-        # Allow multiple files to be uploaded
-        multiple=False
-    ),
-    dbc.Modal([
-        dbc.ModalHeader('Upload option'),
-        dbc.ModalBody(
-            dbc.Input(id='sheet-index', placeholder='Sheet Index', type='number')),
-        dbc.ModalFooter([
-            dbc.Button('Cancel', id='upload-option-cancel'),
-            dbc.Button('Ok', id='upload-option-ok')
-        ])], 
-        id='modal-upload-option'),
-    html.Div(id='alert-upload'),
-    html.Div(id='output-data-upload'),
-])
+def file_upload():
+    """
+    file_upload allows the user to upload files into the web application
+
+    """    ""
+
+    return html.Div([
+                    dcc.Upload(
+                        id='upload-data',
+                        children=html.Div([
+                            'Drag and Drop or ',
+                            html.A('Upload file',
+                                   style={"text-decoration":"underline"})
+                        ]),
+                        style={
+                            'width': '80%',
+                            'height': '100px',
+                            'lineHeight': '60px',
+                            'borderWidth': '1px',
+                            'borderStyle': 'dashed',
+                            'borderRadius': '5px',
+                            'textAlign': 'center',
+                            'margin': 'auto'
+                        },
+                        # Allow one file at a time
+                        multiple=False
+                    ),
+                    
+                    dbc.Modal([
+                        dbc.ModalHeader('Upload option'),
+                        
+                        dbc.ModalBody(
+                            dbc.Input(id='sheet-index', 
+                                      placeholder='Sheet Index', 
+                                      type='number')),
+                        
+                        dbc.ModalFooter([
+                            dbc.Button('Cancel', id='upload-option-cancel'),
+                            dbc.Button('Ok', id='upload-option-ok')
+                                ]
+                            )
+                        ], id='modal-upload-option'
+                              
+                    ),
+                    
+                    html.Div(id='alert-upload'),
+                    html.Div(id='output-data-upload'),
+                ]
+                    )
 
 def parse_contents(contents, filename, date):
+    """
+    parse_contents load the file uploaded to the platform
+
+    Parameters
+    ----------
+    contents : file
+        file uploaded to the ADSML platform
+    filename : string
+        name of the file
+    date : datetime
+        datetime object
+
+    Returns
+    -------
+    Dataframe HTML
+        DataFrame loaded in HTML format.
+    """    ""
     content_type, content_string = contents.split(',')
 
     decoded = base64.b64decode(content_string)
+    
     try:
         if 'csv' in filename:
             # Assume that the user uploaded a CSV file
             df = pd.read_csv(
                 io.StringIO(decoded.decode('utf-8')))
+            
         elif 'xls' in filename:
             # Assume that the user uploaded an excel file
             df = pd.read_excel(io.BytesIO(decoded))
+            
     except Exception as e:
         print(e)
         return html.Div([
@@ -170,23 +207,27 @@ def parse_contents(contents, filename, date):
         ])
 
     return html.Div([
-        html.H5(filename),
-        html.H6(datetime.datetime.fromtimestamp(date)),
+                    html.H5(filename),
+                    
+                    html.H6(datetime.datetime.fromtimestamp(date)),
 
-        dash_table.DataTable(
-            data=df.to_dict('records'),
-            columns=[{'name': i, 'id': i} for i in df.columns]
-        ),
+                    dash_table.DataTable(
+                        data=df.to_dict('records'),
+                        columns=[{'name': i, 'id': i} for i in df.columns]
+                    ),
 
-        html.Hr(),  # horizontal line
+                    html.Hr(),  # horizontal line
 
-        # For debugging, display the raw contents provided by the web browser
-        html.Div('Raw Content'),
-        html.Pre(contents[0:200] + '...', style={
-            'whiteSpace': 'pre-wrap',
-            'wordBreak': 'break-all'
-        })
-    ])
+                    # For debugging, display the raw contents provided by the web browser
+                    html.Div('Raw Content'),
+                    
+                    html.Pre(contents[0:200] + '...', 
+                             style={
+                                    'whiteSpace': 'pre-wrap',
+                                    'wordBreak': 'break-all'
+                                    }
+                             )
+                ])
 
 def create_next_buttons():
     """
@@ -232,15 +273,25 @@ def create_next_buttons():
                                     ,)
                              ], 
     
-)
+                )
 
-data_import_page = html.Div(
-                        id="data-import",
+def load_data_import_page():
+    """
+    load_data_import_page creates the data import page
 
-                        children= [learn_more_button(),
-                                   create_navbar(), 
-                                   file_upload, 
-                                   create_next_buttons()],
+    Returns
+    -------
+    data import page
+        Loads the data import page
+    """    ""
+    return html.Div(
+                    id="data-import",
+                    children= [learn_more_button(),
+                               create_navbar(), 
+                               file_upload(), 
+                               create_next_buttons()
+                               ],
+                    )
 
-)
+
 
