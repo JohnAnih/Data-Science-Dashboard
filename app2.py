@@ -14,15 +14,21 @@ app = dash.Dash(__name__,
 
 app.title = "Automated Data Science and Machine learning platform"
 
+# allow ids from other layouts
 app.config.suppress_callback_exceptions = True
 
 app.layout = html.Div([
-    dcc.Location(id='url', refresh=False),
+    dcc.Location(id='url', 
+                 refresh=False),
+    
     html.Div(id='page-content'),
+    
     dcc.Loading(type='graph', 
                 fullscreen=True, 
+                
                 children=[
-                    dcc.Store(id='data-store', storage_type='local')])
+                    dcc.Store(id='data-store', 
+                              storage_type='local')])
 ])
 
 @app.callback(Output('page-content', 'children'), [Input('url', 'pathname')])
