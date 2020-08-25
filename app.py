@@ -74,6 +74,16 @@ def upload_data(contents, option_ok, option_cancel, sheet_index):
 def num_format(x):
     return round(x, 2) if isinstance(x, float) and not math.isnan(x) and int(x) != x else x
 
+def check_dtype(df, col, first_dtype):
+    if first_dtype == 'float64':
+        if df[col].apply(lambda x: True if pd.isna(x) else int(x) == x).all():
+            return 'Int64'
+    if first_dtype == 'object':
+        if df[col].nunique() <= 20 or df[col].nunique() < df.shape[0] * 0.5:
+            return 'category'
+    else:
+        return first_dtype
+
 def profiling(df):
     df_profiling = parser.data_profiling(df)
     result = []
@@ -83,7 +93,17 @@ def profiling(df):
         res.append(html.H5(col))
         tbl = []
         for idx in df_profiling.index:
-            tbl.append(html.Tr([html.Td(idx), ' : ', html.Td(num_format(df_profiling.loc[idx, col]))]))
+            if not pd.isna(df_profiling.loc[idx, col]):
+                if idx == 'dtype':
+                    first_dtype = df_profiling.loc[idx, col]
+                    true_dtype = check_dtype(df, col, first_dtype)
+                    if first_dtype == true_dtype:
+                        value = first_dtype
+                    else:
+                        value = [first_dtype, dbc.Button('change to ' + true_dtype, style={'margin-left': '10px'})]
+                else:
+                    value = num_format(df_profiling.loc[idx, col])
+                tbl.append(html.Tr([html.Td(idx), ' : ', html.Td(value)]))
         res.append(html.Table(tbl))
         chart = {
             'data': [{'x': df[col], 'type': 'histogram'}]
@@ -105,7 +125,7 @@ def show_dashboard(trigger_value, datasets):
     table_overview, table_profiling = dash.no_update, dash.no_update
     return html.Div([
         html.H3('First 5 rows'),
-        html.Div(dash_table.DataTable(id='table_overview', columns=[{'name': col, 'id': col} for col in df.columns], data=df.head(5).to_dict('row')), style={'margin': '40px'}),
+        html.Div(dash_table.DataTable(id='table_overview', columns=[{'name': col, 'id': col} for col in df.columns], data=df.head(5).to_dict('row'), style_cell={'width': 'auto'}), style={'margin': '40px'}),
         html.Br(),
         #  dcc.Graph(figure=plotly_fig),
         html.H3('Data Profiling'),
