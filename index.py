@@ -92,7 +92,7 @@ def create_image_slider():
     return dtc.Carousel([
            	html.Img(src="../assets/images/Img-%s.jpg" % (numb), 
                      height=300) 
-                     for numb in range(1,10)],
+                     for numb in range(1,11)],
                         
             slides_to_scroll=6,
             slides_to_show=1,
@@ -220,7 +220,10 @@ def display_features_using_cards():
                     ],
                     className="mb-4",
                     style={"background-color": "rgb(6, 67, 122)", 
-                           "padding": "3%"}
+                           "padding-top": "2%", 
+                           "padding-bottom": "1%", 
+                           "padding-left": "2%",
+                           "padding-right": "2%"}
                 ),
                 
 

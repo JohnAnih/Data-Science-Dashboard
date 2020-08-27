@@ -63,34 +63,69 @@ def toggle_modal(n1, n2, is_open):
     return is_open
 
 @app.callback(
-    [Output('data-store', 'data'), Output('modal-upload-option', 'is_open'), Output('alert-upload', 'children'), Output('output-data-upload', 'children')],
-    [Input('upload-data', 'contents'), Input('upload-option-ok', 'n_clicks'), Input('upload-option-cancel', 'n_clicks')],
+    [Output('data-store', 'data'), 
+     Output('modal-upload-option', 'is_open'), 
+     Output('alert-upload', 'children'), 
+     Output('output-data-upload', 'children')],
+    
+    [Input('upload-data', 'contents'), 
+     Input('upload-option-ok', 'n_clicks'), 
+     Input('upload-option-cancel', 'n_clicks')],
     [State('sheet-index', 'value')])
+
 def upload_data(contents, option_ok, option_cancel, sheet_index):
     """Docstring."""
     datasets, modal, alert, output = dash.no_update, dash.no_update, dash.no_update, dash.no_update
+    
     ctx = dash.callback_context
-    content_type, content = contents.split(',')
-    if ctx.triggered[0]['prop_id'] == 'upload-data.contents':
-        if content_type in settings.FILETYPE['spreadsheet']:
-            modal = True
-        elif content_type in settings.FILETYPE['csv']:
-            status, datasets = parser.parse(content, 'csv')
-        else:
-            alert = dbc.Alert(['Non supported file type'], dismissable=True, color='danger')
-    elif ctx.triggered[0]['prop_id'] == 'upload-option-ok.n_clicks':
-        status, datasets = parser.parse(content, 'spreadsheet', sheet_index)
-        if status == 'wrong_sheet_index':
-            alert = dbc.Alert(['Sheet Index not found'], dismissable=True, color='danger')
-        else:
-            pass
-        modal = False
-    elif ctx.triggered[0]['prop_id'] == 'upload-option-cancel.n_clicks':
-        modal = False
+    
+    if contents:
+        #content_type, content = contents.split(',')
+        
+        if ctx.triggered[0]['prop_id'] == 'upload-data.contents':
+
+            if contents.split(',')[0] in settings.FILETYPE['spreadsheet']:
+                modal = True
+
+            elif contents.split(',')[0] in settings.FILETYPE['csv']:
+                status, datasets = parser.parse(contents.split(',')[1], 'csv')
+
+            else:
+                alert = dbc.Alert(['Non supported file type'], 
+                                  dismissable=True, 
+                                  color='danger')
+    
+        elif ctx.triggered[0]['prop_id'] == 'upload-option-ok.n_clicks':
+
+            status, datasets = parser.parse(contents.split(',')[1], 
+                                            'spreadsheet', 
+                                            sheet_index)
+
+            if status == 'wrong_sheet_index':
+                alert = dbc.Alert(['Sheet Index not found'], 
+                                  dismissable=True, 
+                                  color='danger')
+            else:
+                pass
+            modal = False
+
+        elif ctx.triggered[0]['prop_id'] == 'upload-option-cancel.n_clicks':
+            modal = False
+    
     if isinstance(datasets, dict):
-        df = pd.read_json(datasets['data'], orient='split')
-        output = dash_table.DataTable(id='table_overview', columns=[{'name': col, 'id': col} for col in df.columns], data=df.head(5).to_dict('row'))
+        df = pd.read_json(datasets['data'], 
+                          orient='split')
+        
+        output = dash_table.DataTable(id='table_overview', 
+                                      
+                                      columns=[{'name': col, 
+                                                'id': col} 
+                                               for col in df.columns], 
+                                      
+                                      data=df.head(5).to_dict('row'))
+        
         datasets = json.dumps(datasets)
+    
     return datasets, modal, alert, output
 
 

@@ -146,7 +146,8 @@ def file_upload():
                         multiple=False
                     ),
                     
-                    dbc.Modal([
+                    dbc.Modal(
+                        [
                         dbc.ModalHeader('Upload option'),
                         
                         dbc.ModalBody(
@@ -159,7 +160,8 @@ def file_upload():
                             dbc.Button('Ok', id='upload-option-ok')
                                 ]
                             )
-                        ], id='modal-upload-option'
+                        ], 
+                        id='modal-upload-option'
                               
                     ),
                     
@@ -187,7 +189,7 @@ def parse_contents(contents, filename, date):
         DataFrame loaded in HTML format.
     """    ""
     content_type, content_string = contents.split(',')
-
+    
     decoded = base64.b64decode(content_string)
     
     try:
