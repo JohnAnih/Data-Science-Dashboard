@@ -248,6 +248,7 @@ def create_next_buttons():
                                 html.Div(className="center",
                                          children= [
                                                     dbc.Button("Data Profling",
+                                                               id="show-data-profiling",
                                                                className="btn btn-default",
                                                                style={"margin": "5px"},
                                                                color="primary", 
@@ -291,7 +292,8 @@ def load_data_import_page():
                     children= [learn_more_button(),
                                create_navbar(), 
                                file_upload(), 
-                               create_next_buttons()
+                               create_next_buttons(),
+                               html.Div(id='output-data-profiling')
                                ],
                     )
 
