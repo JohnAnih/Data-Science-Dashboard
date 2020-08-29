@@ -88,7 +88,7 @@ def create_image_slider():
     Returns
     -------
     creates the image slider
-    """    ""
+    """    "" 
     return dtc.Carousel([
            	html.Img(src="../assets/images/Img-%s.jpg" % (numb), 
                      height=300) 
