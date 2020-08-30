@@ -31,6 +31,7 @@ app.layout = html.Div([
                 
                 children=[
                     dcc.Store(id='data-store', 
+                              clear_data=True,
                               storage_type='local')])
 ])
 
@@ -120,9 +121,33 @@ def upload_data(contents, option_ok, option_cancel, sheet_index):
                                       
                                       columns=[{'name': col, 
                                                 'id': col} 
-                                               for col in df.columns], 
+                                               for col in df.columns],
                                       
-                                      data=df.head(5).to_dict('row'))
+                                      style_table= {'overflowX': 'auto', 'height': '300px', 'overflowY': 'auto'},
+                                      
+                                      style_data = {"text-align": "center"},
+                                      
+                                      style_header={
+                                          'backgroundColor': 'rgb(6, 67, 122)',
+                                          'color': 'white',
+                                          "text-align": "center",
+                                          'fontWeight': 'bold'},
+                                      
+                                      style_cell={
+                                          # all three widths are needed
+                                          'minWidth': '180px', 
+                                          'width': '180px', 
+                                          'maxWidth': '180px',
+                                          'overflow': 'hidden',
+                                          'textOverflow': 'ellipsis',
+                                        },
+                                      
+                                      data=df.to_dict('records'),
+                                      
+                                      page_size=20,
+                            
+                                      
+                                      )
         
         datasets = json.dumps(datasets)
     
@@ -139,8 +164,7 @@ def check_dtype(df, col, first_dtype):
     if first_dtype == 'object':
         if df[col].nunique() <= 20 or df[col].nunique() < df.shape[0] * 0.5:
             return 'category'
-    else:
-        return first_dtype
+    return first_dtype
 
 def profiling(df):
     df_profiling = parser.data_profiling(df)
