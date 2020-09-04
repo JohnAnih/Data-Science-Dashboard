@@ -11,7 +11,6 @@ from data_import import load_data_import_page
 from src import settings, parser
 
 
-
 app = dash.Dash(__name__,
                 external_stylesheets = [dbc.themes.BOOTSTRAP])
 
@@ -123,7 +122,11 @@ def upload_data(contents, option_ok, option_cancel, sheet_index):
                                                 'id': col} 
                                                for col in df.columns],
                                       
-                                      style_table= {'overflowX': 'auto', 'height': '300px', 'overflowY': 'auto'},
+                                      style_table= {'overflowX': 'auto', 
+                                                    'height': '300px', 
+                                                    'overflowY': 'auto', 
+                                                    "width": "83%",
+                                                    "margin-left": "9%"},
                                       
                                       style_data = {"text-align": "center"},
                                       
@@ -148,6 +151,7 @@ def upload_data(contents, option_ok, option_cancel, sheet_index):
                             
                                       
                                       )
+        
         
         datasets = json.dumps(datasets)
     

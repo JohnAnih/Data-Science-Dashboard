@@ -1,12 +1,6 @@
-import os
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-import dash_bootstrap_components as dbc
-from dash.dependencies import Input, Output, State
-import dash_trich_components as dtc
-
+from layouts.import_libs import *
 import data_import
+from layouts.page_home import create_footer
 
 def create_navbar():
     """
@@ -21,8 +15,8 @@ def create_navbar():
     """    ""
     
     # make a reuseable navitem for the different examples
-    authors = dbc.NavItem(dbc.NavLink("Meet the Team", href="#"))
-    explore = dbc.NavItem(dbc.NavLink("Explore", href="#"))
+    authors = html.A(dbc.NavItem(dbc.NavLink("Meet the Team")), href="#meet-the-team")
+    explore = html.A(dbc.NavItem(dbc.NavLink("Explore")), href="#explore-features")
     get_started = dbc.NavItem(dbc.NavLink("Get started", href="#"))
 
     # features drop down
@@ -56,7 +50,7 @@ def create_navbar():
                                 align="center",
                                 no_gutters=True,
                             ),
-                            href="./get-started-page",
+                            href="/",
                         ),
                         dbc.NavbarToggler(id="navbar-toggler2"),
 
@@ -209,28 +203,131 @@ def display_features_using_cards():
     ]
     
     return html.Div(
-            [
-                dbc.Row(
-                    [
-                        dbc.Col(dbc.Card(data_import, color="light", inverse=True)),
-                        dbc.Col(dbc.Card(data_profile, color="light", inverse=True)),
-                        dbc.Col(dbc.Card(data_clean, color="light", inverse=True)),
-                        dbc.Col(dbc.Card(data_viz, color="light", inverse=True)),
-                        dbc.Col(dbc.Card(data_modeling, color="light", inverse=True)),
-                    ],
-                    className="mb-4",
-                    style={"background-color": "rgb(6, 67, 122)", 
-                           "padding-top": "2%", 
-                           "padding-bottom": "1%", 
-                           "padding-left": "2%",
-                           "padding-right": "2%"}
-                ),
-                
+        
+        id= "explore-features",
+        
+        children=   [
+                        dbc.Row(
+                            [
+                                dbc.Col(dbc.Card(data_import, color="light", inverse=True)),
+                                dbc.Col(dbc.Card(data_profile, color="light", inverse=True)),
+                                dbc.Col(dbc.Card(data_clean, color="light", inverse=True)),
+                                dbc.Col(dbc.Card(data_viz, color="light", inverse=True)),
+                                dbc.Col(dbc.Card(data_modeling, color="light", inverse=True)),
+                            ],
+                            className="mb-4",
+                            style={"background-color": "rgb(6, 67, 122)", 
+                                   "padding-top": "2%", 
+                                   "padding-bottom": "1%", 
+                                   "padding-left": "2%",
+                                   "padding-right": "2%"}
+                        ),
 
-            ], 
+
+                    ], 
 
             style={"margin-top": "2%", 
                    "text-align": "left"}
+        )
+
+
+def meet_the_team():
+    
+
+    johnanih = dbc.Card(
+            dbc.CardBody(
+                [
+        
+                    html.Img(src="../assets/images/johnanih.png", 
+                    alt="John Anih", 
+                    style={"width": "60%"}),
+                    
+                    html.H5("John Anih", className="card-title"),
+            
+                    dcc.Markdown(
+                        """ 
+                        <b> Data Scientist/ Python developer </b>
+                        
+                        <p> Founder/ CEO </p>
+                        
+                        
+                        """,
+                        dangerously_allow_html=True,
+                        className="card-text",
+                        
+                    ),
+            
+                    dbc.Button(
+                        "Contact me", 
+                        color="success", 
+                        className="mt-auto", 
+                        href="mailto:tj.anih@gmail.com"
+                    ),
+                    
+                    
+                ]
+            ), style= {"border": "solid 5px rgb(6, 67, 122)"}
+        ),
+        
+    irfan = dbc.Card(
+            dbc.CardBody(
+                [
+        
+                    html.Img(src="../assets/images/irfan-chi.png", 
+                    alt="Irfan Chahyadi", 
+                    style={"width": "56%"}),
+                    
+                    html.H5("Irfan Chahyadi", className="card-title"),
+            
+                    dcc.Markdown(
+                        """ 
+                        <b> Data Scientist/ Python developer </b>
+                        
+                        <p> Co-Founder/ Contributor </p>
+                        
+                        
+                        """,
+                        dangerously_allow_html=True,
+                        className="card-text",
+                        
+                    ),
+            
+                    dbc.Button(
+                        "Contact me", 
+                        color="success", 
+                        className="mt-auto", 
+                        href="mailto:Irfanchahyadi@gmail.com"
+                    ),
+                    
+                    
+                ]
+            ), style= {"border": "solid 5px rgb(6, 67, 122)"}
+        ),
+    
+    team_cards = dbc.Row([dbc.Col(johnanih, width=6), dbc.Col(irfan, width=6)])
+        
+    return html.Div(
+        
+        id= "meet-the-team",
+        
+        style={"margin-left": "25%", 
+               "margin-right": "25%", 
+               "padding-bottom": "10%", 
+               "padding-top": "3%", 
+               "width": "50%"},
+        children= [
+            html.H1("Meet the team", 
+                    
+                    style={"color": "rgb(6, 67, 122)", 
+                           "font-size": "60px",
+                           "text-align": "center", 
+                           "padding-top": "2%",
+                           
+                           }),
+            
+            html.Br(),
+            team_cards,
+                    ]
         )
 
 
@@ -240,7 +337,9 @@ index_layout = html.Div(
     
     children= [create_navbar(), 
                create_image_slider(), 
-               display_features_using_cards()],
+               display_features_using_cards(), 
+               meet_the_team(), 
+               create_footer()],
 
 )
 
