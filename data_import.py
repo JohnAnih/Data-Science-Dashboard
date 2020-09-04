@@ -44,7 +44,7 @@ def learn_more_button():
             )
     
 
-def create_navbar():
+def create_navbar(title):
     """
     create_navbar creates the website Navbar using bootsraps components
 
@@ -73,9 +73,7 @@ def create_navbar():
                                   ]
                                 )
     
-    title = html.H2("""
-                         DATA IMPORT 
-                         """, 
+    title = html.H2(title, 
                          style={"color": "white",
                                 "font-weight": "bold",
                                 "margin-left": "52px",
@@ -98,7 +96,7 @@ def create_navbar():
                                 align="center",
                                 no_gutters=True,
                             ),
-                            href="./get-started-page",
+                            href="/get-started-page",
                         ),
                         dbc.NavbarToggler(id="navbar-toggler2"),
 
@@ -231,7 +229,7 @@ def parse_contents(contents, filename, date):
                              )
                 ])
 
-def create_next_buttons():
+def create_next_buttons(uploaded=False):
     """
     create_next_buttons creates the buttons for the other features of the application.
     
@@ -247,30 +245,33 @@ def create_next_buttons():
                      children= [
                                 html.Div(className="center",
                                          children= [
-                                                    dbc.Button("Data Profling",
-                                                               id="show-data-profiling",
+                                                    dcc.Link(
+														dbc.Button("Data Profling",
                                                                className="btn btn-default",
                                                                style={"margin": "5px"},
                                                                color="primary", 
-                                                               active=True),
+                                                               active=True), 
+															href='/data_profiling'),
 
                                                     dbc.Button("Data visualization", 
                                                                className="btn btn-default",
                                                                style={"margin": "5px"},
                                                                color="primary", 
-                                                               disabled=True),
+                                                               disabled=not uploaded),
 
-                                                    dbc.Button("Detect common data problems", 
+                                                    dcc.Link(
+                                                        dbc.Button("Detect common data problems", 
                                                                className="btn btn-default",
                                                                style={"margin": "5px"},
                                                                color="primary", 
-                                                               disabled=True),
+                                                               disabled=not uploaded),
+                                                            href='/data_problem'),
 
                                                     dbc.Button("Data Modelling", 
                                                                className="btn btn-default",
                                                                style={"margin": "5px"},
                                                                color="primary", 
-                                                               disabled=True)
+                                                               disabled=not uploaded)
 
                                          ]
                                     ,)
@@ -290,9 +291,9 @@ def load_data_import_page():
     return html.Div(
                     id="data-import",
                     children= [learn_more_button(),
-                               create_navbar(), 
+                               create_navbar('DATA IMPORT'), 
                                file_upload(), 
-                               create_next_buttons(),
+                            #    create_next_buttons(),
                                html.Div(id='output-data-profiling')
                                ],
                     )
