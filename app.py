@@ -13,7 +13,7 @@ app = dash.Dash(__name__,
                 external_stylesheets = [dbc.themes.BOOTSTRAP])
 
 app.title = "Automated Data Science and Machine learning platform"
-
+server = app.server
 # allow ids from other layouts
 app.config.suppress_callback_exceptions = True
 
@@ -512,6 +512,4 @@ def display_chart(column, column_2, color, chart_type, background, datasets):
     return fig
 
 if __name__ == '__main__':
-    app.run_server(debug=True,
-                   use_reloader=False, 
-                   port=8080)
+    app.run_server()
