@@ -58,14 +58,15 @@ def create_navbar(title):
                                             """,
                                             target="learn-more-button",
                                         ),
-                                  ]
+                                  ],
+                                  style = {'display': 'inherit' if title == 'DATA IMPORT' else 'none'}
                                 )
     
     title = html.H2(title, 
-                         style={"color": "white",
-                                "font-weight": "bold",
-                                "margin-left": "52px",
-                                "font-family": 'Montserrat'})
+                    style={"color": "white",
+                           "font-weight": "bold",
+                           "margin-left": "52px",
+                           "font-family": 'Montserrat'})
 
 
     
@@ -169,7 +170,7 @@ def create_next_buttons(uploaded=False):
         creates the buttons of disabled and active until the file uploaded
     """    ""
     
-    return html.Div(
+    return html.Div( className="feature-buttons",
                      children= [
                                 html.Div(className="center",
                                          children= [
@@ -204,10 +205,10 @@ def create_next_buttons(uploaded=False):
                                                                style={"margin": "5px"},
                                                                color="primary", 
                                                                disabled=not uploaded),
-                                                             href='#'),
+                                                             href='/data_visualization'),
 
                                                     dcc.Link(
-                                                        dbc.Button("Detect common data problems", 
+                                                        dbc.Button("Data problems", 
                                                                className="btn btn-default",
                                                                style={"margin": "5px"},
                                                                color="primary", 
@@ -221,7 +222,7 @@ def create_next_buttons(uploaded=False):
                                                                disabled=not uploaded),
                                                              href="#")
 
-                                         ], style= {"display": "flex", "width": "50%", "padding-top": "10%"}
+                                         ], style= {"display": "flex", "width": "50%"}
                                     )
                              ], 
     

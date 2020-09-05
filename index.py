@@ -124,12 +124,10 @@ def display_features_using_cards():
                     html.H5("Data Import", className="card-title"),
                     html.P(
                         "Upload your data.",
+                        style={'font-size': '14px'},
                         className="card-text",
                     ),
-                    dbc.Button(dcc.Link("Get started",
-                                      href="/data_import",
-                           style={"color":"white", "text-decoration":"none"}), 
-                           color="primary"),
+
                 ], 
             ), 
        ]
@@ -141,12 +139,9 @@ def display_features_using_cards():
                     html.H5("Data profiling", className="card-title"),
                     html.P(
                         "Profile your data to get insights",
+                        style={'font-size': '14px'},
                         className="card-text",
                     ),
-                    dbc.Button(html.A("Get started",
-                                      href="#",
-                           style={"color":"white", "text-decoration":"none"}), 
-                           color="primary"),
                 ], 
             ),
         ]
@@ -158,12 +153,9 @@ def display_features_using_cards():
                 html.H5("Data cleaning", className="card-title"),
                 html.P(
                     "Detect common problems in your datasets",
+                    style={'font-size': '14px'},
                     className="card-text",
                 ),
-                dbc.Button(html.A("Get started",
-                                  href="#",
-                           style={"color":"white", "text-decoration":"none"}), 
-                           color="primary"),
             ], 
         ),
     ]
@@ -174,13 +166,10 @@ def display_features_using_cards():
             [
                 html.H5("Data visualization", className="card-title"),
                 html.P(
-                    "Visualize your data to understand the distribution and get insghts",
+                    "Visualize your data to get insghts from the data",
+                    style={'font-size': '14px'},
                     className="card-text",
                 ),
-                dbc.Button(html.A("Get started",
-                                  href="#",
-                           style={"color":"white", "text-decoration":"none"}), 
-                           color="primary"),
             ],
         ),
     ]
@@ -192,12 +181,9 @@ def display_features_using_cards():
                 html.H5("Machine learning", className="card-title"),
                 html.P(
                     "Build a machine learning model",
+                    style={'font-size': '14px'},
                     className="card-text",
                 ),
-                dbc.Button(html.A("Get started",
-                                  href="#",
-                           style={"color":"white", "text-decoration":"none"}), 
-                           color="primary"),
             ], 
         ),
     ]
@@ -207,21 +193,60 @@ def display_features_using_cards():
         id= "explore-features",
         
         children=   [
-                        dbc.Row(
+                        html.H1("Features", 
+                                style={"color": "rgb(6, 67, 122)", 
+                                       "font-size": "60px",
+                                       "text-align": "center"}
+                                ),
+                        
+                        html.Div(
                             [
-                                dbc.Col(dbc.Card(data_import, color="light", inverse=True)),
-                                dbc.Col(dbc.Card(data_profile, color="light", inverse=True)),
-                                dbc.Col(dbc.Card(data_clean, color="light", inverse=True)),
-                                dbc.Col(dbc.Card(data_viz, color="light", inverse=True)),
-                                dbc.Col(dbc.Card(data_modeling, color="light", inverse=True)),
-                            ],
-                            className="mb-4",
+                                dbc.Row(
+                                     [
+                                        dbc.Col(dbc.Card(data_import, color="light", inverse=True)),
+                                        dbc.Col(dbc.Card(data_profile, color="light", inverse=True)),
+                                        dbc.Col(dbc.Card(data_clean, color="light", inverse=True)),
+                                        dbc.Col(dbc.Card(data_viz, color="light", inverse=True)),
+                                        dbc.Col(dbc.Card(data_modeling, color="light", inverse=True)),
+                                    ],
+                                className="mb-4",
+
+                                
+                                ),
+                                
+                                html.H1("Get Started", 
+                                        style={'color': 'white', 
+                                               'text-align': 'center', 
+                                               'padding-top': '1%'}),
+                                
+                                html.P("You can get started here by uploading your dataset", 
+                                       style={'color': 'white', 
+                                              'text-align': 'center', 
+                                              'font-size': '14px'}), 
+                                
+                                html.P("Very easy to use, no need for any guide or documentation, just click the Get started button", 
+                                       style={'color': 'white', 
+                                              'text-align': 'center', 
+                                              'font-size': '14px', 
+                                              'padding-bottom': '3%'}), 
+                                
+                                dbc.Button(dcc.Link("Get started",
+                                                    href="/data_import",
+                                                    style={"color":"white", 
+                                                           "text-decoration":"none"}), 
+                                           color="danger", 
+                                           style={'width': '20%', 
+                                                  'padding': '1%', 
+                                                  'margin-left': '39%'}),
+                                
+                        ],
                             style={"background-color": "rgb(6, 67, 122)", 
                                    "padding-top": "2%", 
-                                   "padding-bottom": "1%", 
-                                   "padding-left": "2%",
-                                   "padding-right": "2%"}
-                        ),
+                                   "padding-bottom": "4%", 
+                                   "padding-left": "10%",
+                                   "padding-right": "10%"}
+                    ),
+                        
 
 
                     ], 
@@ -313,15 +338,14 @@ def meet_the_team():
         style={"margin-left": "25%", 
                "margin-right": "25%", 
                "padding-bottom": "10%", 
-               "padding-top": "3%", 
+               "padding-top": "2%", 
                "width": "50%"},
         children= [
             html.H1("Meet the team", 
                     
                     style={"color": "rgb(6, 67, 122)", 
                            "font-size": "60px",
-                           "text-align": "center", 
-                           "padding-top": "2%",
+                           "text-align": "center",
                            
                            }),
             

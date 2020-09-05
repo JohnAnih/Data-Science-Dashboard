@@ -5,6 +5,7 @@ from data_import import load_data_import_page
 from data_preview import preview_layout
 from data_profiling import profiling_layout
 from data_problem import dataproblem_layout
+from data_viz import data_viz_layout
 from src import settings, parser
 
 
@@ -44,6 +45,8 @@ def display_page(pathname):
         return profiling_layout
     elif pathname == '/data_problem':
         return dataproblem_layout
+    elif pathname == '/data_visualization':
+        return data_viz_layout
     # else:
     #     page_content = page_404.layout
     #return page_content
@@ -227,15 +230,20 @@ def table_info(df, df_profiling, col):
 def profiling(df, with_problem=False):
     result = []
     df_profiling = parser.data_profiling(df)
+    
     df_profiling.set_index('index', inplace=True)
+    
     for col in df_profiling.columns:
         res, first_dtype = table_info(df, df_profiling, col)
+        
         chart = {
             'data': [{'x': df[col], 'type': 'histogram'}]}
+        
         if with_problem:
             problems = check_data_problem(df, col, first_dtype)
             possible_dtype = check_possible_dtype(df, col, first_dtype)
-            right_side = html.Div([
+            
+            data_problems = html.Div([
                 'Change dtype : ',
                 dcc.Dropdown(
                     id={
@@ -246,20 +254,137 @@ def profiling(df, with_problem=False):
                     placeholder='Change dtype',
                     value=possible_dtype[0]),
                 'Data Problems : ',
-                html.Ul([html.Li(prob) for prob in problems])],
+                html.Ul([html.Li(prob) for prob in problems], style={"padding-bottom": "10%"})],
                 style={'width': '30%'}
             )
+            
         else:
-            right_side = None
-        result.append(dbc.Row([
-            html.Div(
-                res, 
-                id={
-                    'type': 'change-dtype-output',
-                    'index': list(df.columns).index(col)
-                }), 
-            dcc.Graph(figure=chart), right_side]))
+            data_problems = None
+            
+        result.append(
+            dbc.Row(
+                    [
+                    html.Div(
+                    res, 
+                    id={
+                        'type': 'change-dtype-output',
+                        'index': list(df.columns).index(col)
+                    }
+                ), 
+               dcc.Graph(figure=chart), data_problems
+            ], style={'padding-bottom': '10%'}
+        )
+    )
     return result
+
+
+def data_viz_content(df, idx):
+    
+    dtypes = ['int64', 'float64', 'object', 'category', 'datetime64[ns]']
+    cols = df.columns
+    numeric_dtypes = df.select_dtypes(include=[dtypes[0], dtypes[1]]).columns
+    string_dtypes = df.select_dtypes(include=dtypes[2]).columns
+    category_dtypes = df.select_dtypes(include=dtypes[3]).columns
+    datetime_dtypes = df.select_dtypes(include=dtypes[4]).columns
+    
+    chart_background = ["plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white"]
+    
+    
+    return html.Div(id="viz", 
+                    children=[
+                        dbc.Row(
+                            [
+                                dbc.Col(
+                                    [
+                                        dcc.Dropdown(
+                                                        id={
+                                                            'type': 'choose-column-chart',
+                                                            'index': idx},
+                                                        options=[{'label':lab, 'value': lab} for lab in cols],
+                                                        placeholder="Select Column: x",
+                                                        style= {'width': '70%'}
+                                                    ),
+                                        ]
+                                    ),
+                                
+                                dbc.Col(
+                                    [
+                                        dcc.Dropdown(
+                                                        id={
+                                                            'type': 'choose-column-chart-2',
+                                                            'index': idx},
+                                                        options=[{'label':lab, 'value': lab} for lab in cols],
+                                                        placeholder="Select Column: y",
+                                                        style= {'width': '70%'}
+                                                    ),
+                                        ]
+                                    ),
+                                
+                                dbc.Col(
+                                    [
+                                        dcc.Dropdown(
+                                                       id={
+                                                            'type': 'choose-color-chart',
+                                                            'index': idx},
+                                                        options=[{'label':lab, 'value': lab} for lab in cols],
+                                                        placeholder="Split By",
+                                                        style= {'width': '70%'}
+                                                    ),
+                                        ]
+                                    ),
+                                
+                                dbc.Col(
+                                    [
+                                        dcc.Dropdown(
+                                                       id={
+                                                            'type': 'choose-background',
+                                                            'index': idx},
+                                                        options=[{'label':chart_b, 'value': chart_b} for chart_b in chart_background],
+                                                        placeholder="Select Background",
+                                                        style= {'width': '70%'}
+                                                    ),
+                                        ]
+                                    ),
+                                
+                        
+                                dbc.Col(
+                                        [
+
+                                            dcc.Dropdown(
+                                                            id={
+                                                            'type': 'choose-chart-type',
+                                                            'index': idx},
+                                                            options=[
+                                                                {'label': 'Bar Chart', 'value': 'bar'},
+                                                                {'label': 'Pie Chart', 'value': 'pie'},
+                                                                {'label': 'Line Chart', 'value': 'line'},
+                                                                {'label': 'Violin Chart', 'value': 'violin'},
+                                                                {'label': 'Scatter Chart', 'value': 'scatter'},
+                                                                {'label': 'Box Plot', 'value': 'box'},
+                                                                ],
+                                                            placeholder="Select Chart",
+                                                            style= {'width': '70%'}
+                                                        ),
+                                        ],
+                                    ),
+                    ],
+                ),
+                        
+                html.Br(),
+              
+                dcc.Graph(
+                            id={
+                            'type': 'output-graph',
+                            'index': idx
+                            },
+                        figure={},
+                        responsive=True),
+                
+                html.Br(),
+
+                    ]
+                )
+    
 
 @app.callback(
     Output('output-data-profiling', 'children'),
@@ -271,7 +396,7 @@ def show_data_profiling(value, datasets):
     df = pd.read_json(datasets['data'], orient='split')
     table_overview, table_profiling = dash.no_update, dash.no_update
     return html.Div([
-        html.H3('Data Profiling'),
+        html.H3('Data Profiling', style={'color': 'rgb(6, 67, 122)'}),
         dbc.Col(profiling(df), style={'margin': '20px'})
     ])
 
@@ -286,8 +411,8 @@ def show_data_profiling(value, datasets):
 	df = pd.read_json(datasets['data'], orient='split')
 	table_overview, table_dataproblem = dash.no_update, dash.no_update
 	return html.Div([
-		html.H3('Data Problems'),
-		dbc.Col(profiling(df, with_problem=True), style={'margin': '20px'})
+		html.H3('Data Problems', style={'color': 'rgb(6, 67, 122)'}),
+		dbc.Col(profiling(df, with_problem=True), style={'margin': '20px', 'padding-bottom': '10%'})
 	])
 
 @app.callback(
@@ -306,16 +431,85 @@ def display_output(value, id, datasets):
     res, first_dtype = table_info(df, df_profiling, col)
     return res
 
-# @app.callback(Output('output-data-upload', 'children'),
-#               [Input('upload-data', 'contents')],
-#               [State('upload-data', 'filename'),
-#                State('upload-data', 'last_modified')])
-# def update_output(list_of_contents, list_of_names, list_of_dates):
-#     if list_of_contents is not None:
-#         children = [
-#             parse_contents(c, n, d) for c, n, d in
-#             zip(list_of_contents, list_of_names, list_of_dates)]
-#         return children
+@app.callback(
+    Output('output-data-visualization', 'children'),
+    [Input('add-chart', 'n_clicks')],
+    [State('data-store', 'data'),
+     State('output-data-visualization', 'children')]
+)
+def show_data_visualization(n_clicks, datasets, current_children):
+    datasets = json.loads(datasets)
+    df = pd.read_json(datasets['data'], orient='split')
+    
+    new_child= data_viz_content(df, n_clicks)
+ 
+    current_children.append(new_child)
+    
+    return current_children
+
+
+
+@app.callback(
+    Output({'type': 'output-graph', 'index': MATCH}, 'figure'),
+    
+    [
+     Input({'type': 'choose-column-chart', 'index': MATCH}, 'value'),
+     Input({'type': 'choose-column-chart-2', 'index': MATCH}, 'value'),
+     Input({'type': 'choose-color-chart', 'index': MATCH}, 'value'),
+     Input({'type': 'choose-chart-type', 'index': MATCH}, 'value'),
+     Input({'type': 'choose-background', 'index': MATCH}, 'value'),
+     ],
+    
+    [State('data-store', 'data')],
+)
+def display_chart(column, column_2, color, chart_type, background, datasets):
+    datasets = json.loads(datasets)
+    df = pd.read_json(datasets['data'], orient='split')
+    
+    # to prevent update when the user first come to the data viz page
+    fig = dash.no_update
+                                                         
+    if chart_type == 'pie':
+        fig = px.pie(df, 
+                     values=column, 
+                     names=color, 
+                     template=background)
+    if chart_type == 'line':
+        fig = px.line(df, x=column, 
+                      y=column_2, 
+                      color=color, 
+                      template=background)
+    if chart_type == 'violin':
+        fig = px.violin(df, 
+                        x=column, 
+                        y=column_2, 
+                        color=color,
+                        points="all", 
+                        hover_data=df.columns,
+                        template=background)
+    if chart_type == 'scatter':
+        fig = px.scatter(df, 
+                        x=column, 
+                        y=column_2, 
+                        color=color,
+                        hover_name=color,
+                        template=background)
+    if chart_type == 'box':
+        fig = px.box(df, 
+                     x=column, 
+                     y=column_2, 
+                     color=color, 
+                     template=background, 
+                     notched=True)
+    if chart_type == 'bar':
+        fig = px.bar(df, 
+                     x=column, 
+                     y=column_2, 
+                     color=color, 
+                     template=background, 
+                     barmode="group")
+
+    return fig
 
 if __name__ == '__main__':
     app.run_server(debug=True,
