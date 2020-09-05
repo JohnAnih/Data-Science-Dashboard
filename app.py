@@ -1,11 +1,5 @@
-import json, math
-import pandas as pd
-import dash
-import dash_table
-import dash_core_components as dcc
-import dash_html_components as html
-import dash_bootstrap_components as dbc
-from dash.dependencies import Input, Output, State, ALL, MATCH
+from layouts.import_libs import *
+
 from index import index_layout
 from data_import import load_data_import_page
 from data_preview import preview_layout
@@ -157,19 +151,9 @@ def show_preview_data(df):
                                       
                                       data=df.to_dict('records'),
                                       
-<<<<<<< HEAD
-                                      page_size=20,
-                            
-                                      
-                                      )
-        
-        
-        datasets = json.dumps(datasets)
-    
-    return datasets, modal, alert, output
-=======
-                                      page_size=20)
->>>>>>> c627a5016bd304a0e36f5398f6ec89cf2d06db12
+
+                                      page_size=20,)
+
 
 @app.callback(
     Output('output-data-overview', 'children'),

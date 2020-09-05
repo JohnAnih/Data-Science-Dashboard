@@ -1,16 +1,4 @@
-import os
-import dash
-import dash_table
-import dash_core_components as dcc
-import dash_html_components as html
-import dash_bootstrap_components as dbc
-from dash.dependencies import Input, Output, State
-import dash_trich_components as dtc
-
-import pandas as pd
-import base64
-import datetime
-import io
+from layouts.import_libs import *
 
 from layouts import markdowns
 
@@ -96,11 +84,7 @@ def create_navbar(title):
                                 align="center",
                                 no_gutters=True,
                             ),
-<<<<<<< HEAD
                             href="/",
-=======
-                            href="/get-started-page",
->>>>>>> c627a5016bd304a0e36f5398f6ec89cf2d06db12
                         ),
                         dbc.NavbarToggler(id="navbar-toggler2"),
 
@@ -185,23 +169,42 @@ def create_next_buttons(uploaded=False):
         creates the buttons of disabled and active until the file uploaded
     """    ""
     
-    return html.Div( className="feature-buttons",
+    return html.Div(
                      children= [
                                 html.Div(className="center",
                                          children= [
+                                 
+                                                    
+                                                    dcc.Link(
+														dbc.Button("Home Page",
+                                                               className="btn btn-default",
+                                                               style={"margin": "5px"},
+                                                               color="primary", 
+                                                               disabled=not uploaded), 
+															href='/'),
+                                                    
+                                                    dcc.Link(
+														dbc.Button("Clear Data",
+                                                               className="btn btn-default",
+                                                               style={"margin": "5px"},
+                                                               color="primary", 
+                                                               disabled=not uploaded), 
+															href='/data_import'),
+                                                    
                                                     dcc.Link(
 														dbc.Button("Data Profling",
                                                                className="btn btn-default",
                                                                style={"margin": "5px"},
                                                                color="primary", 
-                                                               active=True), 
+                                                               disabled=not uploaded), 
 															href='/data_profiling'),
 
-                                                    dbc.Button("Data visualization", 
+                                                    dcc.Link(dbc.Button("Data visualization", 
                                                                className="btn btn-default",
                                                                style={"margin": "5px"},
                                                                color="primary", 
                                                                disabled=not uploaded),
+                                                             href='#'),
 
                                                     dcc.Link(
                                                         dbc.Button("Detect common data problems", 
@@ -211,14 +214,15 @@ def create_next_buttons(uploaded=False):
                                                                disabled=not uploaded),
                                                             href='/data_problem'),
 
-                                                    dbc.Button("Data Modelling", 
+                                                    dcc.Link(dbc.Button("Data Modelling", 
                                                                className="btn btn-default",
                                                                style={"margin": "5px"},
                                                                color="primary", 
-                                                               disabled=not uploaded)
+                                                               disabled=not uploaded),
+                                                             href="#")
 
-                                         ]
-                                    ,)
+                                         ], style= {"display": "flex", "width": "50%", "padding-top": "10%"}
+                                    )
                              ], 
     
                 )
