@@ -17,7 +17,7 @@ def create_navbar():
     # make a reuseable navitem for the different examples
     authors = html.A(dbc.NavItem(dbc.NavLink("Meet the Team")), href="#meet-the-team")
     explore = html.A(dbc.NavItem(dbc.NavLink("Explore")), href="#explore-features")
-    get_started = dbc.NavItem(dbc.NavLink("Get started", href="#"))
+    get_started = dbc.NavItem(dbc.NavLink("Get started", href="/data_import"))
 
     # features drop down
     features = dbc.DropdownMenu(
@@ -230,15 +230,18 @@ def display_features_using_cards():
                                               'font-size': '14px', 
                                               'padding-bottom': '3%'}), 
                                 
-                                dbc.Button(dcc.Link("Get started",
-                                                    href="/data_import",
-                                                    style={"color":"white", 
-                                                           "text-decoration":"none"}), 
-                                           color="danger", 
-                                           style={'width': '20%', 
-                                                  'padding': '1%', 
-                                                  'margin-left': '39%'}),
+                                dcc.Link(dbc.Button("Get started", 
+                                                    color="danger", 
+                                                    style={'width': '20%', 
+                                                           'padding': '1%', 
+                                                           'margin-left': '39%'}), 
+                                         href="/data_import", 
+                                         
+                                         style={"color":"white", 
+                                                "text-decoration":"none"}),
                                 
+               
+
                         ],
                             style={"background-color": "rgb(6, 67, 122)", 
                                    "padding-top": "2%", 

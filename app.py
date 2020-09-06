@@ -377,8 +377,12 @@ def data_viz_content(df, idx):
                             'type': 'output-graph',
                             'index': idx
                             },
-                        figure={},
-                        responsive=True),
+                            
+                            config= {"displaylogo": False},
+                            
+                            figure={},
+                            
+                            responsive=True),
                 
                 html.Br(),
 
