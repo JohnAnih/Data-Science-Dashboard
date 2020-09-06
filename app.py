@@ -513,7 +513,7 @@ def display_chart(column, column_2, color, chart_type, background, datasets):
                      template=background, 
                      barmode="group")
 
-    return fig.show()
+    return fig
 
 if __name__ == '__main__':
     app.run_server()
